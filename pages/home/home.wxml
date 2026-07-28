@@ -1,0 +1,230 @@
+<view class="page">
+  <!-- Hero -->
+  <view class="hero">
+    <image
+      class="hero-image"
+      src="/assets/xinma-poster.jpg"
+      mode="aspectFill"
+    />
+
+    <view class="hero-mask"></view>
+    <view class="hero-grid"></view>
+
+    <view class="hero-content">
+      <view class="eyebrow">
+        OUTDOOR / TRAVEL / TEAM
+      </view>
+
+      <view class="hero-title">
+        探索未知
+      </view>
+
+      <view class="hero-title hero-title-neon">
+        潮流救赎
+      </view>
+
+      <view class="hero-desc">
+        境外游、国内游、公司团建与户外活动，一站式发现更酷的旅行方式。
+      </view>
+
+      <button
+        class="hero-button"
+        bindtap="goDetail"
+        data-id="1"
+      >
+        立即探索
+      </button>
+    </view>
+  </view>
+
+  <view class="container">
+    <!-- 分类 -->
+    <view class="section-title">
+      <text class="main">旅行分类</text>
+      <text class="sub">全部分类</text>
+    </view>
+
+    <view class="category-grid">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="category-card {{item.className}}"
+        bindtap="goCategory"
+        data-name="{{item.name}}"
+      >
+        <view class="category-top">
+          <text class="category-icon">
+            {{item.icon}}
+          </text>
+
+          <text class="category-num">
+            0{{index + 1}}
+          </text>
+        </view>
+
+        <text class="category-name">
+          {{item.name}}
+        </text>
+
+        <text class="category-en">
+          {{item.en}}
+        </text>
+
+        <text class="category-arrow">
+          →
+        </text>
+      </view>
+    </view>
+
+    <!-- 热门目的地 -->
+    <view class="section-title">
+      <text class="main">热门目的地</text>
+      <text class="sub">更多</text>
+    </view>
+
+    <view class="waterfall">
+      <!-- 左列 -->
+      <view class="waterfall-column">
+        <view
+          wx:for="{{leftTrips}}"
+          wx:key="id"
+          class="trip-card"
+          bindtap="goDetail"
+          data-id="{{item.id}}"
+        >
+          <view class="trip-image-wrap">
+            <image
+              class="trip-image"
+              src="{{item.image}}"
+              mode="aspectFill"
+              style="height: {{item.imageHeight}}rpx;"
+            />
+
+            <view class="trip-image-mask"></view>
+
+            <view class="trip-top">
+              <view class="trip-tag">
+                {{item.tag}}
+              </view>
+
+              <view
+                class="favorite"
+                catchtap="toggleFavorite"
+                data-id="{{item.id}}"
+              >
+                {{item.favorite ? '♥' : '♡'}}
+              </view>
+            </view>
+          </view>
+
+          <view class="trip-info">
+            <text class="trip-title">
+              {{item.title}}
+            </text>
+
+            <text class="trip-desc">
+              {{item.desc}}
+            </text>
+
+            <view class="trip-meta">
+              <view class="trip-price">
+                ¥{{item.price}}
+                <text>起</text>
+              </view>
+
+              <text class="trip-days">
+                {{item.days}}
+              </text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 右列 -->
+      <view class="waterfall-column">
+        <view
+          wx:for="{{rightTrips}}"
+          wx:key="id"
+          class="trip-card"
+          bindtap="goDetail"
+          data-id="{{item.id}}"
+        >
+          <view class="trip-image-wrap">
+            <image
+              class="trip-image"
+              src="{{item.image}}"
+              mode="aspectFill"
+              style="height: {{item.imageHeight}}rpx;"
+            />
+
+            <view class="trip-image-mask"></view>
+
+            <view class="trip-top">
+              <view class="trip-tag">
+                {{item.tag}}
+              </view>
+
+              <view
+                class="favorite"
+                catchtap="toggleFavorite"
+                data-id="{{item.id}}"
+              >
+                {{item.favorite ? '♥' : '♡'}}
+              </view>
+            </view>
+          </view>
+
+          <view class="trip-info">
+            <text class="trip-title">
+              {{item.title}}
+            </text>
+
+            <text class="trip-desc">
+              {{item.desc}}
+            </text>
+
+            <view class="trip-meta">
+              <view class="trip-price">
+                ¥{{item.price}}
+                <text>起</text>
+              </view>
+
+              <text class="trip-days">
+                {{item.days}}
+              </text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 服务保障 -->
+    <view class="section-title">
+      <text class="main">服务保障</text>
+    </view>
+
+    <view class="service-grid glass-card">
+      <view
+        wx:for="{{services}}"
+        wx:key="title"
+        class="service-item"
+      >
+        <view class="service-icon">
+          {{item.icon}}
+        </view>
+
+        <text class="service-title">
+          {{item.title}}
+        </text>
+
+        <text class="service-desc">
+          {{item.desc}}
+        </text>
+      </view>
+    </view>
+
+    <view class="page-bottom">
+      XTREME TRAVEL
+    </view>
+  </view>
+</view>

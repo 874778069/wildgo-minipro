@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/detail/detail",
+    "pages/signup/signup",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#0A0A0D",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "XTREME TRAVEL",
+    "backgroundColor": "#0A0A0D",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8D8D95",
+    "selectedColor": "#B6FF00",
+    "backgroundColor": "#0A0A0D",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
