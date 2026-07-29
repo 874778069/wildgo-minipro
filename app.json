@@ -1,14 +1,16 @@
 {
   "pages": [
-    "pages/home/home",
-    "pages/detail/detail",
+    "pages/index/index",
+    "pages/activity/list/list",
+    "pages/activity/detail/detail",
     "pages/signup/signup",
-    "pages/profile/profile"
+    "pages/mine/mine",
+    "pages/mine/registration/registration"
   ],
   "window": {
     "navigationBarBackgroundColor": "#0A0A0D",
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "XTREME TRAVEL",
+    "navigationBarTitleText": "WildGo",
     "backgroundColor": "#0A0A0D",
     "backgroundTextStyle": "dark"
   },
@@ -19,11 +21,11 @@
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/home/home",
+        "pagePath": "pages/index/index",
         "text": "首页"
       },
       {
-        "pagePath": "pages/profile/profile",
+        "pagePath": "pages/mine/mine",
         "text": "我的"
       }
     ]

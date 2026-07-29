@@ -1,0 +1,15 @@
+<view class="page container">
+  <view class="heading"><text>自由行</text><view>跟着热爱，出发就好</view></view>
+  <view class="activity-card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+    <image src="{{item.coverUrl}}" mode="aspectFill" />
+    <view class="content">
+      <text class="title">{{item.title}}</text>
+      <text class="description">{{item.description || '一场值得期待的旅行活动'}}</text>
+      <view class="info"><text>⌖ {{item.location || '地点待定'}}</text><text>{{item.maxPeople || '不限'}}人</text></view>
+      <view class="price">¥{{item.price}} <text>/ 人</text></view>
+    </view>
+  </view>
+  <view class="state" wx:if="{{loading}}">加载中...</view>
+  <view class="state" wx:elif="{{finished && list.length}}">已经到底啦</view>
+  <view class="state" wx:elif="{{!list.length}}">暂无活动</view>
+</view>

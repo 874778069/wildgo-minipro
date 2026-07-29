@@ -1,1 +1,26 @@
-Page({data:{user:{name:'旅行探索者',level:'XTREME MEMBER',avatarText:'旅'},stats:[{label:'收藏',value:12},{label:'报名',value:2},{label:'足迹',value:8}],orders:[{id:1,title:'新加坡 × 马来西亚',date:'7月20日出发',status:'待确认',price:6198}],menus:['常用出行人','优惠券','我的收藏','联系客服','关于我们']},menuTap(e){wx.showToast({title:e.currentTarget.dataset.name,icon:'none'})},goHome(){wx.switchTab({url:'/pages/home/home'})}})
+Page({
+  data: {
+    user: { name: '旅行探索者', level: 'XTREME MEMBER', avatarText: '旅' },
+    stats: [
+      { label: '收藏', value: 12 },
+      { label: '报名', value: 2 },
+      { label: '足迹', value: 8 }
+    ],
+    orders: [
+      {
+        id: 1,
+        title: '新加坡 × 马来西亚',
+        date: '7月20日出发',
+        status: '待确认',
+        price: 6198
+      }
+    ],
+    menus: ['常用出行人', '优惠券', '我的收藏', '联系客服', '关于我们']
+  },
+  menuTap(e) {
+    wx.showToast({ title: e.currentTarget.dataset.name, icon: 'none' })
+  },
+  goHome() {
+    wx.switchTab({ url: '/pages/home/home' })
+  }
+})

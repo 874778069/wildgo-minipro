@@ -1,0 +1,42 @@
+<view class="page">
+  <swiper class="banner" indicator-dots autoplay circular interval="4000" wx:if="{{banner.length}}">
+    <swiper-item wx:for="{{banner}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image src="{{item.image}}" mode="aspectFill" />
+      <view class="banner-mask"></view>
+      <view class="banner-title">{{item.title}}</view>
+    </swiper-item>
+  </swiper>
+  <view class="banner placeholder" wx:else>
+    <view>去更远的地方</view>
+    <text>WILDGO · EXPLORE MORE</text>
+  </view>
+
+  <view class="container">
+    <view class="section-title"><text class="main">探索方式</text><text class="sub">CHOOSE YOUR WAY</text></view>
+    <view class="entrances">
+      <view class="entrance free" bindtap="goActivityList">
+        <text class="entrance-tag">NOW</text><text class="entrance-title">自由行</text><text class="entrance-sub">发现精选旅行活动 →</text>
+      </view>
+      <view class="entrance bbq" bindtap="comingSoon">
+        <text class="entrance-tag">SOON</text><text class="entrance-title">虾场烧烤店</text><text class="entrance-sub">敬请期待</text>
+      </view>
+    </view>
+
+    <view class="section-title"><text class="main">推荐活动</text><text class="sub" bindtap="goActivityList">查看全部 →</text></view>
+    <view class="waterfall" wx:if="{{leftActivities.length || rightActivities.length}}">
+      <view class="column">
+        <view class="activity-card" wx:for="{{leftActivities}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+          <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
+          <view class="activity-info"><text class="title">{{item.title}}</text><text class="location">⌖ {{item.location || '地点待定'}}</text><view class="meta"><text class="price">¥{{item.price}}</text><text>{{item.maxPeople || '不限'}}人</text></view></view>
+        </view>
+      </view>
+      <view class="column">
+        <view class="activity-card" wx:for="{{rightActivities}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+          <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
+          <view class="activity-info"><text class="title">{{item.title}}</text><text class="location">⌖ {{item.location || '地点待定'}}</text><view class="meta"><text class="price">¥{{item.price}}</text><text>{{item.maxPeople || '不限'}}人</text></view></view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>{{loading ? '正在加载...' : '暂无推荐活动'}}</view>
+  </view>
+</view>
