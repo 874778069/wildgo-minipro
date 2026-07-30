@@ -8,6 +8,10 @@
     <view><text class="eyebrow">MY TRIPS</text><text class="title">我的报名</text><text class="desc">查看活动报名与确认状态</text></view>
     <view class="count">{{registrationCount}}<text> 条</text></view>
   </view>
+  <view class="registration-card order-card" bindtap="goOrders">
+    <view><text class="eyebrow">LOCAL ORDERS</text><text class="title">我的套餐</text><text class="desc">查看本地生活订单与核销码</text></view>
+    <view class="count">{{orderCount}}<text> 单</text></view>
+  </view>
   <view class="menus">
     <view bindtap="comingSoon"><text>联系客服</text><text>→</text></view>
     <view bindtap="comingSoon"><text>关于 WildGo</text><text>→</text></view>

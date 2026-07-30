@@ -49,6 +49,40 @@ function getShopProductDetail(id) {
   })
 }
 
+function createOrder(shopProductId) {
+  return request({
+    url: '/local-life/order/create',
+    method: 'POST',
+    data: { shopProductId },
+    auth: true
+  })
+}
+
+function mockPay(orderNo) {
+  return request({
+    url: '/local-life/order/mock-pay',
+    method: 'POST',
+    data: { orderNo },
+    auth: true
+  })
+}
+
+function getMyOrders(params) {
+  return request({
+    url: `/local-life/order/my${buildQuery(params)}`,
+    auth: true,
+    silent: true
+  })
+}
+
+function getMyOrderDetail(id) {
+  return request({
+    url: `/local-life/order/detail/${id}`,
+    auth: true,
+    silent: true
+  })
+}
+
 function unwrapList(data) {
   if (Array.isArray(data)) {
     return { list: data, total: data.length }
@@ -103,6 +137,29 @@ function normalizeShopProductDetail(data) {
   }
 }
 
+const orderStatusNames = {
+  WAIT_PAY: '待支付',
+  PAID: '待核销',
+  USED: '已核销',
+  CANCELLED: '已取消',
+  REFUND: '已退款'
+}
+
+function normalizeOrder(item) {
+  const verification = (item && item.verification) || null
+  return {
+    ...(item || {}),
+    productCoverUrl: imageUrl(item && item.productCoverSnapshot),
+    unitPriceText: money(item && item.unitPriceSnapshot),
+    originalAmountText: money(item && item.originalAmount),
+    discountAmountText: money(item && item.discountAmount),
+    amountText: money(item && item.amount),
+    statusText: orderStatusNames[item && item.status] || '',
+    verification,
+    verificationCode: verification && verification.code
+  }
+}
+
 function todayBusinessHours(shop) {
   if (!shop) return '营业时间未配置'
   if (shop.todayBusinessHours) return shop.todayBusinessHours
@@ -124,9 +181,15 @@ module.exports = {
   getShopDetail,
   getShopProducts,
   getShopProductDetail,
+  createOrder,
+  mockPay,
+  getMyOrders,
+  getMyOrderDetail,
   unwrapList,
   normalizeShop,
   normalizeShopProduct,
   normalizeShopProductDetail,
+  normalizeOrder,
+  orderStatusNames,
   todayBusinessHours
 }

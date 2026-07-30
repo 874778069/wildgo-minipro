@@ -1,4 +1,5 @@
 const {
+  createOrder,
   getShopProductDetail,
   normalizeShopProductDetail
 } = require('../../../api/local-life')
@@ -8,7 +9,8 @@ Page({
     id: 0,
     detail: null,
     loading: true,
-    error: false
+    error: false,
+    buying: false
   },
 
   onLoad(options) {
@@ -52,10 +54,21 @@ Page({
     wx.makePhoneCall({ phoneNumber: phone })
   },
 
-  buy() {
-    wx.showToast({
-      title: '购买功能即将上线',
-      icon: 'none'
-    })
+  async buy() {
+    if (this.data.buying || !this.data.detail) return
+    this.setData({ buying: true })
+    try {
+      const order = await createOrder(this.data.detail.id)
+      wx.navigateTo({
+        url: `/pages/local-life/order/detail?id=${order.id}`
+      })
+    } catch (error) {
+      wx.showToast({
+        title: error.message || '创建订单失败',
+        icon: 'none'
+      })
+    } finally {
+      this.setData({ buying: false })
+    }
   }
 })

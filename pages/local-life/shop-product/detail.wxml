@@ -63,7 +63,7 @@
         <text>到店价</text>
         <view><text>¥</text>{{detail.priceText}}</view>
       </view>
-      <button bindtap="buy">立即购买</button>
+      <button loading="{{buying}}" disabled="{{buying}}" bindtap="buy">{{buying ? '正在创建订单' : '立即购买'}}</button>
     </view>
   </block>
 </view>

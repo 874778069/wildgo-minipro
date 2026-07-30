@@ -1,0 +1,36 @@
+<view class="page container">
+  <view class="heading">
+    <text>我的套餐</text>
+    <text>LOCAL EXPERIENCES</text>
+  </view>
+
+  <view class="order-card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+    <view class="top-line">
+      <text class="shop">{{item.shopNameSnapshot}}</text>
+      <text class="status {{item.status}}">{{item.statusText}}</text>
+    </view>
+    <view class="product">
+      <image wx:if="{{item.productCoverUrl}}" src="{{item.productCoverUrl}}" mode="aspectFill" />
+      <view wx:else class="cover-empty">W</view>
+      <view class="info">
+        <text class="name">{{item.productNameSnapshot}}</text>
+        <text class="time">{{item.createdText}}</text>
+        <view class="price"><text>实付</text><text>¥{{item.amountText}}</text></view>
+      </view>
+    </view>
+    <view class="footer">
+      <text>{{item.status === 'PAID' ? '查看核销二维码' : '查看订单详情'}}</text>
+      <text>→</text>
+    </view>
+  </view>
+
+  <view class="state" wx:if="{{loading}}">订单加载中...</view>
+  <view class="state" wx:elif="{{error}}">
+    <text>订单加载失败</text>
+    <button bindtap="load">重新加载</button>
+  </view>
+  <view class="state" wx:elif="{{!list.length}}">
+    <text>还没有套餐订单</text>
+    <text class="sub">去虾场烧烤店发现新体验吧</text>
+  </view>
+</view>

@@ -6,9 +6,11 @@
     "pages/local-life/shop/list",
     "pages/local-life/shop/detail",
     "pages/local-life/shop-product/detail",
+    "pages/local-life/order/detail",
     "pages/signup/signup",
     "pages/mine/mine",
-    "pages/mine/registration/registration"
+    "pages/mine/registration/registration",
+    "pages/mine/order/list"
   ],
   "window": {
     "navigationBarBackgroundColor": "#0A0A0D",

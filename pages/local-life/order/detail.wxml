@@ -1,0 +1,61 @@
+<view class="page">
+  <view class="state-page" wx:if="{{loading && !order}}">
+    <view class="loading-ring"></view>
+    <text>正在加载订单...</text>
+  </view>
+  <view class="state-page" wx:elif="{{error && !order}}">
+    <text class="state-icon">↻</text>
+    <text class="state-title">订单加载失败</text>
+    <button bindtap="retry">重新加载</button>
+  </view>
+
+  <block wx:elif="{{order}}">
+    <view class="hero container">
+      <text class="eyebrow">LOCAL EXPERIENCE ORDER</text>
+      <view class="status-row">
+        <text class="status {{order.status}}">{{order.statusText}}</text>
+        <text class="order-no">{{order.orderNo}}</text>
+      </view>
+      <text class="status-tip" wx:if="{{order.status === 'WAIT_PAY'}}">完成测试支付后将生成核销二维码</text>
+      <text class="status-tip" wx:elif="{{order.status === 'PAID'}}">到店后请向工作人员出示核销二维码</text>
+      <text class="status-tip" wx:elif="{{order.status === 'USED'}}">套餐已完成核销，感谢你的体验</text>
+    </view>
+
+    <view class="container content">
+      <view class="product-card">
+        <image wx:if="{{order.productCoverUrl}}" src="{{order.productCoverUrl}}" mode="aspectFill" />
+        <view wx:else class="cover-empty">W</view>
+        <view class="product-info">
+          <text class="shop">{{order.shopNameSnapshot}}</text>
+          <text class="name">{{order.productNameSnapshot}}</text>
+          <text class="quantity">数量 × {{order.quantity}}</text>
+        </view>
+      </view>
+
+      <view class="verification-card" wx:if="{{order.status === 'PAID' || order.status === 'USED'}}">
+        <text class="card-title">{{order.status === 'USED' ? '已核销凭证' : '到店核销码'}}</text>
+        <text class="card-tip">请勿将二维码转发给他人</text>
+        <verification-qr value="{{order.verificationCode}}" wx:if="{{order.verificationCode}}" />
+        <text class="code" bindtap="copyCode">{{order.verificationCode}}</text>
+        <text class="copy-tip">点击复制核销码</text>
+      </view>
+
+      <view class="info-card">
+        <view><text>套餐单价</text><text>¥{{order.unitPriceText}}</text></view>
+        <view><text>优惠金额</text><text>-¥{{order.discountAmountText}}</text></view>
+        <view class="amount"><text>实付金额</text><text>¥{{order.amountText}}</text></view>
+      </view>
+
+      <view class="info-card">
+        <view><text>下单时间</text><text>{{order.createdText}}</text></view>
+        <view wx:if="{{order.paidText}}"><text>支付时间</text><text>{{order.paidText}}</text></view>
+        <view><text>联系电话</text><text>{{order.userPhoneSnapshot || '未填写'}}</text></view>
+      </view>
+    </view>
+
+    <view class="bottom-bar" wx:if="{{order.status === 'WAIT_PAY'}}">
+      <view><text>应付</text><text class="amount-price">¥{{order.amountText}}</text></view>
+      <button loading="{{paying}}" disabled="{{paying}}" bindtap="pay">{{paying ? '支付处理中' : '模拟支付（测试）'}}</button>
+    </view>
+  </block>
+</view>
