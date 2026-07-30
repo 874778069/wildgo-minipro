@@ -1,0 +1,76 @@
+<view class="page">
+  <view class="loading-state" wx:if="{{loading && !shop}}">
+    <view class="loading-ring"></view>
+    <text>正在加载门店...</text>
+  </view>
+
+  <view class="error-state" wx:elif="{{error && !shop}}">
+    <text class="error-icon">↻</text>
+    <text class="error-title">门店信息加载失败</text>
+    <button bindtap="retry">重新加载</button>
+  </view>
+
+  <block wx:elif="{{shop}}">
+    <view class="hero">
+      <image wx:if="{{shop.coverUrl}}" src="{{shop.coverUrl}}" mode="aspectFill" />
+      <view wx:else class="hero-empty">WILDGO LOCAL</view>
+      <view class="hero-mask"></view>
+      <view class="hero-content">
+        <view class="status {{shop.businessStatus}}">{{shop.businessStatusText}}</view>
+        <text class="shop-name">{{shop.name}}</text>
+        <text class="shop-address">⌖ {{shop.address}}</text>
+      </view>
+    </view>
+
+    <view class="container content">
+      <view class="quick-actions">
+        <view class="action-card">
+          <text class="action-icon">⌖</text>
+          <view>
+            <text class="action-label">门店地址</text>
+            <text class="action-value">{{shop.address}}</text>
+          </view>
+        </view>
+        <view class="action-card phone {{shop.phone ? '' : 'disabled'}}" bindtap="callShop">
+          <text class="action-icon">☎</text>
+          <view>
+            <text class="action-label">电话联系</text>
+            <text class="action-value">{{shop.phone || '暂未提供'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-label">营业时间</text>
+          <text class="info-value">{{shop.businessHoursText}}</text>
+        </view>
+        <view class="info-row description">
+          <text class="info-label">门店介绍</text>
+          <text class="info-value">{{shop.description || '门店介绍正在完善中。'}}</text>
+        </view>
+      </view>
+
+      <view class="section-heading">
+        <view>
+          <text class="section-title">到店套餐</text>
+          <text class="section-sub">挑一个喜欢的体验</text>
+        </view>
+        <text class="count">{{products.length}} 个</text>
+      </view>
+
+      <view wx:if="{{products.length}}">
+        <product-card
+          wx:for="{{products}}"
+          wx:key="id"
+          product="{{item}}"
+          bindselect="goProduct"
+        />
+      </view>
+      <view class="empty-products" wx:else>
+        <text>套餐正在准备中</text>
+        <text>可以先电话联系门店了解详情</text>
+      </view>
+    </view>
+  </block>
+</view>

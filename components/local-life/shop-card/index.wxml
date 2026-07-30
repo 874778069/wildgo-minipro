@@ -1,0 +1,19 @@
+<view class="shop-card {{shop.isSuspended ? 'suspended' : ''}}" bindtap="handleTap">
+  <view class="cover-wrap">
+    <image wx:if="{{shop.coverUrl}}" class="cover" src="{{shop.coverUrl}}" mode="aspectFill" />
+    <view wx:else class="cover cover-empty">
+      <text>WILDGO LOCAL</text>
+    </view>
+    <view class="cover-mask"></view>
+    <view class="status {{shop.businessStatus}}">{{shop.businessStatusText}}</view>
+  </view>
+  <view class="content">
+    <text class="name">{{shop.name}}</text>
+    <view class="address">
+      <text class="pin">⌖</text>
+      <text>{{shop.address || '地址待完善'}}</text>
+    </view>
+    <text class="description">{{shop.description || '发现好玩、好吃、适合相聚的本地体验。'}}</text>
+    <view class="more">查看门店与套餐 <text>→</text></view>
+  </view>
+</view>

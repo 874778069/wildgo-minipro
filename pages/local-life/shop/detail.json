@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "门店详情",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "product-card": "/components/local-life/product-card/index"
+  }
+}

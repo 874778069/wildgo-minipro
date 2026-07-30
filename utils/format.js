@@ -8,7 +8,8 @@ function dateTime(value) {
 const statusMap = {
   PENDING: '待确认',
   CONFIRMED: '已确认',
-  CANCELLED: '已取消'
+  CANCELLED: '已取消',
+  EXPIRED: '已过期'
 }
 
 module.exports = { dateTime, statusMap }

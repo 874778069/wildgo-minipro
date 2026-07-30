@@ -17,8 +17,8 @@
       <view class="entrance free" bindtap="goActivityList">
         <text class="entrance-tag">NOW</text><text class="entrance-title">自由行</text><text class="entrance-sub">发现精选旅行活动 →</text>
       </view>
-      <view class="entrance bbq" bindtap="comingSoon">
-        <text class="entrance-tag">SOON</text><text class="entrance-title">虾场烧烤店</text><text class="entrance-sub">敬请期待</text>
+      <view class="entrance bbq" bindtap="goLocalLife">
+        <text class="entrance-tag">LOCAL</text><text class="entrance-title">虾场烧烤店</text><text class="entrance-sub">钓虾 · 烧烤 · 团建 →</text>
       </view>
     </view>
 

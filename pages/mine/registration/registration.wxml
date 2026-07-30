@@ -1,15 +1,45 @@
 <view class="page container">
-  <view class="heading"><text>我的报名</text><view>每次出发，都值得期待</view></view>
-  <view class="card" wx:for="{{list}}" wx:key="id">
-    <view class="activity" bindtap="goDetail" data-id="{{item.activity.id}}">
-      <image src="{{item.coverUrl}}" mode="aspectFill" />
-      <view class="info"><text class="title">{{item.activity.title}}</text><text>报名时间 {{item.createdText}}</text><text>报名人 {{item.name}} · {{item.phone}}</text></view>
+  <view class="heading"><text>我的报名</text>
+    <view>每次出发，都值得期待</view>
+  </view>
+  <view
+    class="card {{item.status}}"
+    wx:for="{{list}}"
+    wx:key="id"
+  >
+    <view
+      class="expired-badge"
+      wx:if="{{item.status === 'EXPIRED'}}"
+    >已过期</view>
+    <view
+      class="activity"
+      bindtap="goDetail"
+      data-id="{{item.activity.id}}"
+    >
+      <image
+        src="{{item.coverUrl}}"
+        mode="aspectFill"
+      />
+      <view class="info"><text class="title">{{item.activity.title}}</text><text>报名时间
+          {{item.createdText}}</text><text>报名人 {{item.name}} · {{item.phone}}</text><text wx:if="{{item.remark}}">备注
+          {{item.remark}}</text></view>
     </view>
     <view class="footer">
       <text class="status {{item.status}}">{{item.statusText}}</text>
-      <button wx:if="{{item.status !== 'CANCELLED'}}" size="mini" catchtap="cancel" data-id="{{item.id}}">取消报名</button>
+      <button
+        wx:if="{{item.status === 'PENDING' || item.status === 'CONFIRMED'}}"
+        size="mini"
+        catchtap="cancel"
+        data-id="{{item.id}}"
+      >取消报名</button>
     </view>
   </view>
-  <view class="empty" wx:if="{{!loading && !list.length}}">暂无报名记录<text>去首页发现精彩活动吧</text></view>
-  <view class="empty" wx:if="{{loading}}">加载中...</view>
+  <view
+    class="empty"
+    wx:if="{{!loading && !list.length}}"
+  >暂无报名记录<text>去首页发现精彩活动吧</text></view>
+  <view
+    class="empty"
+    wx:if="{{loading}}"
+  >加载中...</view>
 </view>

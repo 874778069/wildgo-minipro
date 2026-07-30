@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "虾场烧烤店",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "shop-card": "/components/local-life/shop-card/index"
+  }
+}

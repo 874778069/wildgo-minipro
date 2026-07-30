@@ -48,8 +48,16 @@ Page({
     })
   },
 
-  comingSoon() {
-    wx.showToast({ title: '敬请期待', icon: 'none' })
+  goLocalLife() {
+    wx.navigateTo({
+      url: '/pages/local-life/shop/list',
+      fail: (error) => {
+        wx.showToast({
+          title: error.errMsg || '门店列表打开失败',
+          icon: 'none'
+        })
+      }
+    })
   },
 
   goDetail(event) {

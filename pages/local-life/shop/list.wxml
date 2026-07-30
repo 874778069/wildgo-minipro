@@ -1,0 +1,44 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">WILDGO LOCAL</text>
+    <text class="title">周末，就在附近玩</text>
+    <text class="subtitle">钓虾 · 烧烤 · 团建</text>
+    <view class="hero-glow"></view>
+  </view>
+
+  <view class="container shop-list">
+    <block wx:if="{{loading && !shops.length}}">
+      <view class="skeleton" wx:for="{{skeletonItems}}" wx:key="*this">
+        <view class="skeleton-cover"></view>
+        <view class="skeleton-line wide"></view>
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line short"></view>
+      </view>
+    </block>
+
+    <view class="state-card" wx:elif="{{error && !shops.length}}">
+      <text class="state-icon">↻</text>
+      <text class="state-title">门店加载失败</text>
+      <text class="state-desc">网络开小差了，请稍后再试</text>
+      <button class="retry-button" bindtap="retry">重新加载</button>
+    </view>
+
+    <view class="state-card" wx:elif="{{!shops.length}}">
+      <text class="state-icon">⌂</text>
+      <text class="state-title">暂无可浏览门店</text>
+      <text class="state-desc">更多本地体验正在准备中</text>
+    </view>
+
+    <block wx:else>
+      <shop-card
+        wx:for="{{shops}}"
+        wx:key="id"
+        shop="{{item}}"
+        bindselect="goDetail"
+      />
+      <view class="list-footer" wx:if="{{loadingMore}}">正在加载更多...</view>
+      <view class="list-footer" wx:elif="{{!hasMore}}">已经到底了 · 去体验附近的快乐</view>
+      <view class="list-footer error" wx:elif="{{error}}" bindtap="retry">加载失败，点击重试</view>
+    </block>
+  </view>
+</view>

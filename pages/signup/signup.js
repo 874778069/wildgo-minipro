@@ -31,7 +31,8 @@ Page({
           activityId: this.data.activityId,
           name: values.name.trim(),
           phone: values.phone,
-          wechat: values.wechat && values.wechat.trim()
+          wechat: values.wechat && values.wechat.trim(),
+          remark: values.remark && values.remark.trim()
         }
       })
       wx.showModal({
