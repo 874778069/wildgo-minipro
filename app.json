@@ -7,6 +7,7 @@
     "pages/local-life/shop/detail",
     "pages/local-life/shop-product/detail",
     "pages/local-life/order/detail",
+    "pages/login/login",
     "pages/signup/signup",
     "pages/mine/mine",
     "pages/mine/registration/registration",

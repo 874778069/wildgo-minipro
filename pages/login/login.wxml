@@ -1,0 +1,30 @@
+<view class="page container">
+  <view class="login-head">
+    <text class="title">登录 WildGo</text>
+    <text class="subtitle">授权头像并填写昵称后，可报名活动和购买套餐</text>
+  </view>
+
+  <view class="login-card">
+    <button class="avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <view class="avatar-frame">
+        <image wx:if="{{avatar}}" class="avatar-image" src="{{avatar}}" mode="aspectFill" />
+        <view class="avatar" wx:else>W</view>
+      </view>
+    </button>
+    <text class="avatar-tip">点击授权微信头像</text>
+
+    <view class="field">
+      <text>昵称</text>
+      <input
+        type="nickname"
+        value="{{nickname}}"
+        placeholder="请输入昵称"
+        bindinput="onNicknameInput"
+      />
+    </view>
+
+    <button class="submit-button" loading="{{saving}}" disabled="{{saving}}" bindtap="submit">
+      完成登录
+    </button>
+  </view>
+</view>

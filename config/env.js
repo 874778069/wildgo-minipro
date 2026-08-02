@@ -1,10 +1,13 @@
-const ENV = 'production'
+const ENV = 'development'
 
 const environments = {
+  development: {
+    baseUrl: 'http://106.55.255.101:3000'
+  },
   production: {
     baseUrl: 'https://api.fdzhuang.site'
   },
-  // 测试环境域名确定后只需填写这里，并将 ENV 改为 test。
+  // 如需单独联调测试环境，改这里并把 ENV 切到 test。
   test: {
     baseUrl: ''
   }

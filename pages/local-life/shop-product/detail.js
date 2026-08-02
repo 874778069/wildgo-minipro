@@ -3,6 +3,7 @@ const {
   getShopProductDetail,
   normalizeShopProductDetail
 } = require('../../../api/local-life')
+const { requireUserProfile } = require('../../../utils/request')
 
 Page({
   data: {
@@ -58,11 +59,13 @@ Page({
     if (this.data.buying || !this.data.detail) return
     this.setData({ buying: true })
     try {
+      await requireUserProfile()
       const order = await createOrder(this.data.detail.id)
       wx.navigateTo({
         url: `/pages/local-life/order/detail?id=${order.id}`
       })
     } catch (error) {
+      if (error && error.code === 'PROFILE_REQUIRED') return
       wx.showToast({
         title: error.message || '创建订单失败',
         icon: 'none'

@@ -1,4 +1,4 @@
-const { ensureLogin, request } = require('../../utils/request')
+const { ensureLogin, request, requireUserProfile } = require('../../utils/request')
 
 Page({
   data: { activityId: 0, activity: {}, submitting: false },
@@ -23,6 +23,7 @@ Page({
     if (this.data.submitting) return
     this.setData({ submitting: true })
     try {
+      await requireUserProfile()
       await request({
         url: '/activity-registration/create',
         method: 'POST',
@@ -41,6 +42,13 @@ Page({
         showCancel: false,
         success: () => wx.redirectTo({ url: '/pages/mine/registration/registration' })
       })
+    } catch (error) {
+      if (error && error.code !== 'PROFILE_REQUIRED') {
+        wx.showToast({
+          title: error.message || '提交报名失败',
+          icon: 'none'
+        })
+      }
     } finally {
       this.setData({ submitting: false })
     }

@@ -1,15 +1,17 @@
 const {
   ensureLogin,
-  USER_KEY,
-  TOKEN_KEY,
+  hasUserProfile,
   imageUrl,
   request,
-  wechatLogin
+  USER_KEY
 } = require('../../utils/request')
+
+const DEFAULT_NICKNAME = 'WildGo 旅行者'
 
 Page({
   data: {
-    user: { nickname: 'WildGo 旅行者', avatar: '' },
+    loggedIn: false,
+    user: { nickname: DEFAULT_NICKNAME, avatar: '' },
     registrationCount: 0,
     orderCount: 0
   },
@@ -22,6 +24,22 @@ Page({
     try {
       const login = await ensureLogin()
       const user = login.user || wx.getStorageSync(USER_KEY) || {}
+      const loggedIn = hasUserProfile(user)
+
+      this.setData({
+        loggedIn,
+        user: {
+          ...user,
+          nickname: loggedIn ? user.nickname : DEFAULT_NICKNAME,
+          avatar: loggedIn ? imageUrl(user.avatar) : ''
+        }
+      })
+
+      if (!loggedIn) {
+        this.setData({ registrationCount: 0, orderCount: 0 })
+        return
+      }
+
       const [registrations, orders] = await Promise.all([
         request({
           url: '/activity-registration/my?page=1&pageSize=1',
@@ -34,12 +52,8 @@ Page({
           silent: true
         })
       ])
+
       this.setData({
-        user: {
-          ...user,
-          nickname: user.nickname || 'WildGo 旅行者',
-          avatar: imageUrl(user.avatar)
-        },
         registrationCount: registrations.total || 0,
         orderCount: orders.total || 0
       })
@@ -48,26 +62,24 @@ Page({
     }
   },
 
+  goLogin() {
+    wx.navigateTo({ url: '/pages/login/login' })
+  },
+
   goRegistrations() {
+    if (!this.data.loggedIn) {
+      this.goLogin()
+      return
+    }
     wx.navigateTo({ url: '/pages/mine/registration/registration' })
   },
 
   goOrders() {
+    if (!this.data.loggedIn) {
+      this.goLogin()
+      return
+    }
     wx.navigateTo({ url: '/pages/mine/order/list' })
-  },
-
-  syncProfile() {
-    wx.getUserProfile({
-      desc: '用于在 WildGo 展示您的头像和昵称',
-      success: async ({ userInfo }) => {
-        wx.removeStorageSync(TOKEN_KEY)
-        await wechatLogin({
-          nickname: userInfo.nickName,
-          avatar: userInfo.avatarUrl
-        })
-        this.load()
-      }
-    })
   },
 
   comingSoon() {

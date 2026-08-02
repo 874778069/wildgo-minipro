@@ -1,7 +1,16 @@
 const { imageUrl, request } = require('../../../utils/request')
 
 Page({
-  data: { list: [], page: 1, pageSize: 10, total: 0, loading: false, finished: false },
+  data: {
+    list: [],
+    leftList: [],
+    rightList: [],
+    page: 1,
+    pageSize: 10,
+    total: 0,
+    loading: false,
+    finished: false
+  },
 
   onLoad() {
     this.load(true)
@@ -27,13 +36,21 @@ Page({
     this.setData({ loading: true })
     try {
       const data = await request({ url: `/activity/list?page=${page}&pageSize=${this.data.pageSize}` })
-      const incoming = (data.list || []).map((item) => ({
+      const baseIndex = reset ? 0 : this.data.list.length
+      const incoming = (data.list || []).map((item, index) => ({
         ...item,
-        coverUrl: imageUrl(item.cover || (item.images[0] && item.images[0].url))
+        coverUrl: imageUrl(item.cover || (item.images[0] && item.images[0].url)),
+        imageHeight: (baseIndex + index) % 3 === 0
+          ? 430
+          : (baseIndex + index) % 3 === 1
+            ? 520
+            : 470
       }))
       const list = reset ? incoming : this.data.list.concat(incoming)
       this.setData({
         list,
+        leftList: list.filter((_, index) => index % 2 === 0),
+        rightList: list.filter((_, index) => index % 2 === 1),
         total: data.total,
         page: page + 1,
         finished: list.length >= data.total

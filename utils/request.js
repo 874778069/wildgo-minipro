@@ -55,6 +55,20 @@ function rawRequest(options) {
   })
 }
 
+function imageUrl(url) {
+  if (!url || /^https?:\/\//.test(url)) return url
+  return `${baseUrl}${url}`
+}
+
+function normalizeUser(user) {
+  return user
+    ? {
+        ...user,
+        avatar: imageUrl(user.avatar)
+      }
+    : user
+}
+
 function wechatLogin(profile) {
   if (loginTask) return loginTask
   loginTask = new Promise((resolve, reject) => {
@@ -70,9 +84,10 @@ function wechatLogin(profile) {
           data: { code: result.code, ...(profile || {}) }
         })
           .then((data) => {
+            const user = normalizeUser(data.user)
             wx.setStorageSync(TOKEN_KEY, data.token)
-            wx.setStorageSync(USER_KEY, data.user)
-            resolve(data)
+            wx.setStorageSync(USER_KEY, user)
+            resolve({ ...data, user })
           })
           .catch(reject)
       },
@@ -91,9 +106,39 @@ function wechatLogin(profile) {
 
 function ensureLogin() {
   const token = wx.getStorageSync(TOKEN_KEY)
+  const user = normalizeUser(wx.getStorageSync(USER_KEY))
+  if (user) {
+    wx.setStorageSync(USER_KEY, user)
+  }
   return token
-    ? Promise.resolve({ token, user: wx.getStorageSync(USER_KEY) })
+    ? Promise.resolve({ token, user })
     : wechatLogin()
+}
+
+function hasUserProfile(user) {
+  const nickname = ((user && user.nickname) || '').trim()
+  const avatar = ((user && user.avatar) || '').trim()
+  return !!nickname && nickname !== '微信用户' && !!avatar
+}
+
+function showProfileRequiredModal() {
+  wx.showToast({ title: '请先登录', icon: 'none' })
+  wx.navigateTo({ url: '/pages/login/login' })
+}
+
+async function requireUserProfile() {
+  const login = await ensureLogin()
+  const user = login.user || wx.getStorageSync(USER_KEY) || {}
+
+  if (hasUserProfile(user)) {
+    return login
+  }
+
+  showProfileRequiredModal()
+  throw {
+    code: 'PROFILE_REQUIRED',
+    message: '请先登录'
+  }
 }
 
 async function request(options, retried) {
@@ -122,7 +167,7 @@ async function request(options, retried) {
 function uploadFile(filePath, formData = {}) {
   return ensureLogin().then(({ token }) => new Promise((resolve, reject) => {
     wx.uploadFile({
-      url: `${baseUrl}/upload/image`,
+      url: `${baseUrl}/upload/user/image`,
       filePath,
       name: 'file',
       formData,
@@ -154,16 +199,13 @@ function downloadFile(url) {
   })
 }
 
-function imageUrl(url) {
-  if (!url || /^https?:\/\//.test(url)) return url
-  return `${baseUrl}${url}`
-}
-
 module.exports = {
   TOKEN_KEY,
   USER_KEY,
   request,
   ensureLogin,
+  requireUserProfile,
+  hasUserProfile,
   wechatLogin,
   uploadFile,
   downloadFile,

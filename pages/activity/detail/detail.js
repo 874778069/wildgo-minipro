@@ -1,5 +1,5 @@
 const { dateTime } = require('../../../utils/format')
-const { imageUrl, request } = require('../../../utils/request')
+const { imageUrl, request, requireUserProfile } = require('../../../utils/request')
 
 Page({
   data: { id: 0, activity: null, loading: true },
@@ -33,7 +33,14 @@ Page({
     wx.previewImage({ current: event.currentTarget.dataset.url, urls })
   },
 
-  goSignup() {
+  async goSignup() {
+    try {
+      await requireUserProfile()
+    } catch (error) {
+      if (error && error.code === 'PROFILE_REQUIRED') return
+      wx.showToast({ title: error.message || '请先登录', icon: 'none' })
+      return
+    }
     wx.navigateTo({ url: `/pages/signup/signup?activityId=${this.data.id}` })
   }
 })
