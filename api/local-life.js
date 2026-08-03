@@ -146,6 +146,28 @@ function normalizeShop(item) {
   }
 }
 
+function normalizeGroupDetail(value) {
+  const groupDetail = Array.isArray(value)
+    ? value
+        .map((detail) => ({
+          name: detail && detail.name ? String(detail.name) : '',
+          quantity: detail && detail.quantity ? String(detail.quantity) : '',
+          price: detail && detail.price !== undefined ? detail.price : '',
+          priceText: money(detail && detail.price)
+        }))
+        .filter((detail) => detail.name && detail.quantity)
+    : []
+  const groupTotal = groupDetail.reduce((sum, detail) => {
+    const price = Number(detail.price)
+    return Number.isNaN(price) ? sum : sum + price
+  }, 0)
+  return {
+    groupDetail,
+    hasGroupDetail: groupDetail.length > 0,
+    groupTotalText: money(groupTotal)
+  }
+}
+
 function normalizeShopProduct(item) {
   const product = item.product || {}
   return {
@@ -157,6 +179,7 @@ function normalizeShopProduct(item) {
     categoryCode: item.categoryCode || product.categoryCode || 'OTHER',
     categoryName: item.categoryName || categoryNames[item.categoryCode || product.categoryCode] || '其他',
     description: item.description || product.description || '',
+    ...normalizeGroupDetail(product.groupDetail),
     priceText: money(item.price),
     originalPriceText: money(item.originalPrice),
     hasOriginalPrice: item.originalPrice !== null && item.originalPrice !== undefined && item.originalPrice !== ''
@@ -182,6 +205,7 @@ const orderStatusNames = {
 
 function normalizeOrder(item) {
   const verification = (item && item.verification) || null
+  const product = item && item.shopProduct && item.shopProduct.product
   return {
     ...(item || {}),
     productCoverUrl: imageUrl(item && item.productCoverSnapshot),
@@ -190,6 +214,7 @@ function normalizeOrder(item) {
     discountAmountText: money(item && item.discountAmount),
     amountText: money(item && item.amount),
     statusText: orderStatusNames[item && item.status] || '',
+    ...normalizeGroupDetail(product && product.groupDetail),
     verification,
     verificationCode: verification && verification.code
   }

@@ -28,7 +28,7 @@
         class="cover-empty"
       >WILDGO LOCAL EXPERIENCE</view>
       <view class="cover-mask"></view>
-      <text class="category">{{detail.categoryName}}</text>
+
     </view>
 
     <view class="container content">
@@ -44,12 +44,40 @@
         </view>
       </view>
 
-      <view class="section">
+      <view
+        wx:if="{{detail.hasGroupDetail}}"
+        class="section"
+      >
         <view class="section-heading">
-          <text class="section-title">套餐介绍</text>
-          <text class="section-en">EXPERIENCE</text>
+          <text class="section-title">套餐详情</text>
+          <text class="section-en">GROUP BUY</text>
         </view>
-        <text class="description">{{detail.description || '套餐详情正在完善中，可联系门店了解更多。'}}</text>
+        <view class="group-card">
+          <view
+            wx:for="{{detail.groupDetail}}"
+            wx:key="name"
+            class="group-row"
+          >
+            <text class="group-dot">●</text>
+            <text class="group-name">{{item.name}}</text>
+            <view><text class="group-quantity">({{item.quantity}}) </text>
+              <text class="group-price">¥{{item.priceText}}</text>
+            </view>
+          </view>
+          <view class="group-summary">
+            <view>
+              <text>总价</text>
+              <text>¥{{detail.groupTotalText}}</text>
+            </view>
+            <view class="deal-price">
+              <text>团购价</text>
+              <text>¥{{detail.priceText}}</text>
+            </view>
+          </view>
+          <view class="group-remark">
+            <text>{{detail.description || '套餐详情正在完善中，可联系门店了解更多。'}}</text>
+          </view>
+        </view>
       </view>
 
       <view class="section">
@@ -89,7 +117,10 @@
             </view>
           </view>
         </view>
-        <view wx:if="{{!shops.length}}" class="empty-shops">暂无适用门店</view>
+        <view
+          wx:if="{{!shops.length}}"
+          class="empty-shops"
+        >暂无适用门店</view>
       </view>
     </view>
 

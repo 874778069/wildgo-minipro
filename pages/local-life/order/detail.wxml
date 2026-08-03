@@ -32,6 +32,21 @@
         </view>
       </view>
 
+      <view class="group-card" wx:if="{{order.hasGroupDetail}}">
+        <text class="group-title">套餐详情</text>
+        <view wx:for="{{order.groupDetail}}" wx:key="name" class="group-row">
+          <text class="group-dot">●</text>
+          <text class="group-name">{{item.name}}</text>
+          <view><text class="group-quantity">({{item.quantity}}) </text>
+            <text class="group-price">¥{{item.priceText}}</text>
+          </view>
+        </view>
+        <view class="group-summary">
+          <view><text>总价</text><text>¥{{order.groupTotalText}}</text></view>
+          <view class="deal-price"><text>套餐价</text><text>¥{{order.unitPriceText}}</text></view>
+        </view>
+      </view>
+
       <view class="verification-card" wx:if="{{order.status === 'PAID' || order.status === 'USED'}}">
         <text class="card-title">{{order.status === 'USED' ? '已核销凭证' : '到店核销码'}}</text>
         <text class="card-tip">请勿将二维码转发给他人</text>
