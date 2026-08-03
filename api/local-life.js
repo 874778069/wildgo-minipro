@@ -49,6 +49,20 @@ function getShopProductDetail(id) {
   })
 }
 
+function getShopProductShop(id) {
+  return request({
+    url: `/local-life/shop-product/detail/${id}/shop`,
+    silent: true
+  })
+}
+
+function getShopProductShops(id) {
+  return request({
+    url: `/local-life/shop-product/detail/${id}/shops`,
+    silent: true
+  })
+}
+
 function createOrder(shopProductId) {
   return request({
     url: '/local-life/order/create',
@@ -100,11 +114,32 @@ function money(value) {
   return number.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')
 }
 
+function imageUrls(value) {
+  if (!value) return []
+  if (Array.isArray(value)) return value.map(imageUrl).filter(Boolean)
+  if (typeof value !== 'string') return []
+  try {
+    const parsed = JSON.parse(value)
+    if (Array.isArray(parsed)) {
+      return parsed.map(imageUrl).filter(Boolean)
+    }
+    if (typeof parsed === 'string' && parsed !== value) {
+      return imageUrls(parsed)
+    }
+  } catch (error) {
+    return [imageUrl(value)].filter(Boolean)
+  }
+  return [imageUrl(value)].filter(Boolean)
+}
+
 function normalizeShop(item) {
   const status = item.businessStatus || item.status
+  const shopImages = imageUrls(item.cover)
   return {
     ...item,
-    coverUrl: imageUrl(item.cover),
+    coverUrl: shopImages[0] || '',
+    imageUrls: shopImages,
+    hasImages: shopImages.length > 0,
     businessStatus: status,
     businessStatusText: item.businessStatusText || statusNames[status] || '',
     isSuspended: status === 'SUSPENDED'
@@ -174,6 +209,28 @@ function todayBusinessHours(shop) {
   return `今日 ${periods.map((period) => `${period.start}-${period.end}`).join('、')}`
 }
 
+function weeklyBusinessHours(shop) {
+  const dayMap = [
+    ['MONDAY', '周一'],
+    ['TUESDAY', '周二'],
+    ['WEDNESDAY', '周三'],
+    ['THURSDAY', '周四'],
+    ['FRIDAY', '周五'],
+    ['SATURDAY', '周六'],
+    ['SUNDAY', '周日']
+  ]
+  const weekly = shop && shop.businessHours && shop.businessHours.weekly
+  if (!weekly) return []
+  return dayMap.map(([key, label]) => {
+    const periods = weekly[key] || []
+    return {
+      key,
+      label,
+      text: periods.length ? periods.map((period) => `${period.start}-${period.end}`).join('、') : '休息'
+    }
+  })
+}
+
 module.exports = {
   categoryNames,
   statusNames,
@@ -181,6 +238,8 @@ module.exports = {
   getShopDetail,
   getShopProducts,
   getShopProductDetail,
+  getShopProductShop,
+  getShopProductShops,
   createOrder,
   mockPay,
   getMyOrders,
@@ -191,5 +250,6 @@ module.exports = {
   normalizeShopProductDetail,
   normalizeOrder,
   orderStatusNames,
-  todayBusinessHours
+  todayBusinessHours,
+  weeklyBusinessHours
 }

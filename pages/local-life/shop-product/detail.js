@@ -1,7 +1,10 @@
 const {
   createOrder,
   getShopProductDetail,
-  normalizeShopProductDetail
+  getShopProductShops,
+  normalizeShop,
+  normalizeShopProductDetail,
+  todayBusinessHours
 } = require('../../../api/local-life')
 const { requireUserProfile } = require('../../../utils/request')
 
@@ -9,6 +12,7 @@ Page({
   data: {
     id: 0,
     detail: null,
+    shops: [],
     loading: true,
     error: false,
     buying: false
@@ -31,9 +35,19 @@ Page({
   async loadDetail() {
     this.setData({ loading: true, error: false })
     try {
-      const data = await getShopProductDetail(this.data.id)
+      const [data, shopData] = await Promise.all([
+        getShopProductDetail(this.data.id),
+        getShopProductShops(this.data.id)
+      ])
       const detail = normalizeShopProductDetail(data)
-      this.setData({ detail })
+      const shops = (Array.isArray(shopData) ? shopData : []).map((item) => {
+        const shop = normalizeShop(item.shop || {})
+        shop.shopProductId = item.id
+        shop.priceText = item.price !== undefined ? String(item.price) : ''
+        shop.businessHoursText = todayBusinessHours(shop)
+        return shop
+      })
+      this.setData({ detail, shops })
       wx.setNavigationBarTitle({ title: detail.name || '套餐详情' })
     } catch (error) {
       this.setData({ error: true })
@@ -46,13 +60,23 @@ Page({
     this.loadDetail()
   },
 
-  callShop() {
-    const phone = this.data.detail && this.data.detail.shop && this.data.detail.shop.phone
+  callShop(event) {
+    const shopId = Number(event.currentTarget.dataset.id)
+    const shop = (this.data.shops || []).find((item) => item.id === shopId)
+    const phone = shop && shop.phone
     if (!phone) {
       wx.showToast({ title: '门店暂未填写电话', icon: 'none' })
       return
     }
     wx.makePhoneCall({ phoneNumber: phone })
+  },
+
+  goShop(event) {
+    const id = Number(event.currentTarget.dataset.id)
+    if (!id) return
+    wx.navigateTo({
+      url: `/pages/local-life/shop/detail?id=${id}`
+    })
   },
 
   async buy() {

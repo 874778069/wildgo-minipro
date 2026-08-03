@@ -4,14 +4,19 @@ const {
   normalizeShop,
   normalizeShopProduct,
   todayBusinessHours,
-  unwrapList
+  unwrapList,
+  weeklyBusinessHours
 } = require('../../../api/local-life')
 
 Page({
   data: {
     id: 0,
     shop: null,
+    shopImages: [],
+    hasShopImages: false,
+    hasMultipleShopImages: false,
     products: [],
+    weeklyHours: [],
     loading: true,
     error: false
   },
@@ -42,11 +47,21 @@ Page({
         throw new Error('门店暂不可用')
       }
       shop.businessHoursText = todayBusinessHours(shop)
+      const weeklyHours = weeklyBusinessHours(shop)
       const products = unwrapList(productData).list
         .filter((item) => !item.status || item.status === 'ONLINE')
         .filter((item) => !item.product || !item.product.status || item.product.status === 'ONLINE')
         .map(normalizeShopProduct)
-      this.setData({ shop, products })
+      const shopImages = shop.imageUrls || []
+      console.log('shop detail images', shopImages)
+      this.setData({
+        shop,
+        products,
+        weeklyHours,
+        shopImages,
+        hasShopImages: shopImages.length > 0,
+        hasMultipleShopImages: shopImages.length > 1
+      })
       wx.setNavigationBarTitle({ title: shop.name || '门店详情' })
     } catch (error) {
       this.setData({ error: true })
@@ -66,6 +81,14 @@ Page({
       return
     }
     wx.makePhoneCall({ phoneNumber: phone })
+  },
+
+  previewImage(event) {
+    const current = event.currentTarget.dataset.url
+    const urls = this.data.shopImages || []
+    console.log('preview shop image', current, urls)
+    if (!current || !urls.length) return
+    wx.previewImage({ current, urls })
   },
 
   goProduct(event) {

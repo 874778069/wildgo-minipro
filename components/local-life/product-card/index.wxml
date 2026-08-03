@@ -1,17 +1,33 @@
-<view class="product-card" bindtap="handleTap">
-  <image wx:if="{{product.coverUrl}}" class="cover" src="{{product.coverUrl}}" mode="aspectFill" />
-  <view wx:else class="cover cover-empty">LOCAL EXPERIENCE</view>
+<view
+  class="product-card"
+  bindtap="handleTap"
+>
+  <image
+    wx:if="{{product.coverUrl}}"
+    class="cover"
+    src="{{product.coverUrl}}"
+    mode="aspectFill"
+  />
+  <view
+    wx:else
+    class="cover cover-empty"
+  >LOCAL EXPERIENCE</view>
   <view class="content">
-    <view class="title-row">
-      <text class="name">{{product.name}}</text>
-      <text class="category">{{product.categoryName}}</text>
+    <view>
+      <view class="title-row">
+        <text class="name">{{product.name}}</text>
+        <text class="category">{{product.categoryName}}</text>
+      </view>
+      <view class="description">{{product.description || '到店体验套餐，更多详情请进入查看。'}}</view>
     </view>
-    <text class="description">{{product.description || '到店体验套餐，更多详情请进入查看。'}}</text>
     <view class="price-row">
       <view>
         <text class="currency">¥</text>
         <text class="price">{{product.priceText}}</text>
-        <text wx:if="{{product.hasOriginalPrice}}" class="original">¥{{product.originalPriceText}}</text>
+        <text
+          wx:if="{{product.hasOriginalPrice}}"
+          class="original"
+        >¥{{product.originalPriceText}}</text>
       </view>
       <text class="arrow">→</text>
     </view>
