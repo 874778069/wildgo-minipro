@@ -1,4 +1,4 @@
-const { baseUrl } = require('../config/env')
+const { baseUrl, imageBaseUrl } = require('../config/env')
 
 const TOKEN_KEY = 'wildgo_token'
 const USER_KEY = 'wildgo_user'
@@ -57,7 +57,7 @@ function rawRequest(options) {
 
 function imageUrl(url) {
   if (!url || /^https?:\/\//.test(url)) return url
-  return `${baseUrl}${url}`
+  return `${imageBaseUrl}${url}`
 }
 
 function normalizeUser(user) {
@@ -186,7 +186,7 @@ function uploadFile(filePath, formData = {}) {
 }
 
 function downloadFile(url) {
-  const target = /^https?:\/\//.test(url) ? url : `${baseUrl}${url}`
+  const target = /^https?:\/\//.test(url) ? url : `${imageBaseUrl}${url}`
   return new Promise((resolve, reject) => {
     wx.downloadFile({
       url: target,
