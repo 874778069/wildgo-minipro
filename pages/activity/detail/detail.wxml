@@ -10,10 +10,27 @@
     <view class="detail-card"><view><text>开始</text><text>{{activity.startText}}</text></view><view><text>结束</text><text>{{activity.endText}}</text></view></view>
     <view class="section-title"><text class="main">活动介绍</text></view>
     <view class="description">{{activity.description || '更多活动介绍即将更新'}}</view>
+    <view class="section-title" wx:if="{{activity.attachmentList.length}}"><text class="main">活动附件</text><text class="sub">{{activity.attachmentList.length}} 个</text></view>
+    <view class="attachments" wx:if="{{activity.attachmentList.length}}">
+      <view
+        wx:for="{{activity.attachmentList}}"
+        wx:key="url"
+        class="attachment-card"
+        bindtap="openAttachment"
+        data-url="{{item.url}}"
+        data-type="{{item.fileType}}"
+      >
+        <view class="file-icon">{{item.iconText}}</view>
+        <view class="file-info">
+          <text class="file-name">{{item.name}}</text>
+          <text class="file-meta">{{item.sizeText}}</text>
+        </view>
+      </view>
+    </view>
     <view class="section-title" wx:if="{{activity.imageList.length}}"><text class="main">活动图片</text><text class="sub">{{activity.imageList.length}} 张</text></view>
-    <scroll-view class="images" scroll-x wx:if="{{activity.imageList.length}}">
-      <image wx:for="{{activity.imageList}}" wx:key="id" src="{{item.url}}" mode="aspectFill" bindtap="previewImage" data-url="{{item.url}}" />
-    </scroll-view>
+    <view class="images" wx:if="{{activity.imageList.length}}">
+      <image wx:for="{{activity.imageList}}" wx:key="url" src="{{item.url}}" mode="widthFix" bindtap="previewImage" data-url="{{item.url}}" />
+    </view>
   </view>
   <view class="bottom-bar"><button class="neon-button" bindtap="goSignup">立即报名</button></view>
 </view>
