@@ -2,7 +2,7 @@ const ENV = 'development'
 
 const environments = {
   development: {
-    baseUrl: 'https://www.fdzhuang.site'
+    baseUrl: 'https://api.fdzhuang.site'
   },
   production: {
     baseUrl: 'https://www.fdzhuang.site'
