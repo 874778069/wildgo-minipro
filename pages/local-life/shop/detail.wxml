@@ -59,7 +59,10 @@
 
     <view class="container content">
       <view class="quick-actions">
-        <view class="action-card address-card">
+        <view
+          class="action-card address-card {{shop.hasLocation ? 'clickable' : ''}}"
+          bindtap="openLocation"
+        >
           <text class="action-icon">⌖</text>
           <view>
             <text class="action-label">门店地址</text>

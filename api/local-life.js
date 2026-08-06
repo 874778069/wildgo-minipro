@@ -135,11 +135,16 @@ function imageUrls(value) {
 function normalizeShop(item) {
   const status = item.businessStatus || item.status
   const shopImages = imageUrls(item.cover)
+  const latitude = item.latitude === null || item.latitude === undefined || item.latitude === '' ? null : Number(item.latitude)
+  const longitude = item.longitude === null || item.longitude === undefined || item.longitude === '' ? null : Number(item.longitude)
   return {
     ...item,
+    latitude,
+    longitude,
     coverUrl: shopImages[0] || '',
     imageUrls: shopImages,
     hasImages: shopImages.length > 0,
+    hasLocation: !Number.isNaN(latitude) && !Number.isNaN(longitude) && latitude !== null && longitude !== null,
     businessStatus: status,
     businessStatusText: item.businessStatusText || statusNames[status] || '',
     isSuspended: status === 'SUSPENDED'

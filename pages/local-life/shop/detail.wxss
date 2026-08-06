@@ -154,6 +154,10 @@
 .address-card {
   flex: 1;
 }
+.address-card.clickable:active {
+  transform: scale(0.99);
+  opacity: 0.9;
+}
 .phone-icon {
   display: flex;
   width: 94rpx;

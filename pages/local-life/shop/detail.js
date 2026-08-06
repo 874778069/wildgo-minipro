@@ -83,6 +83,21 @@ Page({
     wx.makePhoneCall({ phoneNumber: phone })
   },
 
+  openLocation() {
+    const shop = this.data.shop
+    if (!shop || !shop.hasLocation) {
+      wx.showToast({ title: '暂无门店定位', icon: 'none' })
+      return
+    }
+    wx.openLocation({
+      latitude: Number(shop.latitude),
+      longitude: Number(shop.longitude),
+      name: shop.name || '门店位置',
+      address: shop.address || '',
+      scale: 16
+    })
+  },
+
   previewImage(event) {
     const current = event.currentTarget.dataset.url
     const urls = this.data.shopImages || []
