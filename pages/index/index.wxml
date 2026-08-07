@@ -47,4 +47,5 @@
     </view>
     <view class="empty" wx:else>{{loading ? '正在加载...' : '暂无推荐内容'}}</view>
   </view>
+  <view class="bottom-glow"></view>
 </view>
