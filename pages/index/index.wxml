@@ -1,6 +1,6 @@
 <view class="page">
   <swiper class="banner" indicator-dots autoplay circular interval="4000" wx:if="{{banner.length}}">
-    <swiper-item wx:for="{{banner}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+    <swiper-item wx:for="{{banner}}" wx:key="id" bindtap="goActivityDetail" data-id="{{item.id}}">
       <image src="{{item.image}}" mode="aspectFill" />
       <view class="banner-mask"></view>
       <view class="banner-title">{{item.title}}</view>
@@ -22,21 +22,21 @@
       </view>
     </view>
 
-    <view class="section-title"><text class="main">推荐活动</text><text class="sub" bindtap="goActivityList">查看全部 →</text></view>
-    <view class="waterfall" wx:if="{{leftActivities.length || rightActivities.length}}">
+    <view class="section-title"><text class="main">WildGo 推荐</text><text class="sub">活动 · 套餐</text></view>
+    <view class="waterfall" wx:if="{{leftItems.length || rightItems.length}}">
       <view class="column">
-        <view class="activity-card" wx:for="{{leftActivities}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="activity-card" wx:for="{{leftItems}}" wx:key="targetUrl" bindtap="goRecommendDetail" data-url="{{item.targetUrl}}">
           <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
-          <view class="activity-info"><text class="title">{{item.title}}</text><text class="location">⌖ {{item.location || '地点待定'}}</text><view class="meta"><text class="price">¥{{item.price}}</text><text>{{item.maxPeople || '不限'}}人</text></view></view>
+          <view class="activity-info"><text class="type-tag {{item.type}}">{{item.typeText}}</text><text class="title">{{item.title}}</text><text class="location">⌖ {{item.subtitle || '信息待定'}}</text><view class="meta"><text class="price">¥{{item.priceText}}</text><text>{{item.type === 'SHOP_PRODUCT' ? '到店体验' : ((item.maxPeople || '不限') + '人')}}</text></view></view>
         </view>
       </view>
       <view class="column">
-        <view class="activity-card" wx:for="{{rightActivities}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="activity-card" wx:for="{{rightItems}}" wx:key="targetUrl" bindtap="goRecommendDetail" data-url="{{item.targetUrl}}">
           <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
-          <view class="activity-info"><text class="title">{{item.title}}</text><text class="location">⌖ {{item.location || '地点待定'}}</text><view class="meta"><text class="price">¥{{item.price}}</text><text>{{item.maxPeople || '不限'}}人</text></view></view>
+          <view class="activity-info"><text class="type-tag {{item.type}}">{{item.typeText}}</text><text class="title">{{item.title}}</text><text class="location">⌖ {{item.subtitle || '信息待定'}}</text><view class="meta"><text class="price">¥{{item.priceText}}</text><text>{{item.type === 'SHOP_PRODUCT' ? '到店体验' : ((item.maxPeople || '不限') + '人')}}</text></view></view>
         </view>
       </view>
     </view>
-    <view class="empty" wx:else>{{loading ? '正在加载...' : '暂无推荐活动'}}</view>
+    <view class="empty" wx:else>{{loading ? '正在加载...' : '暂无推荐内容'}}</view>
   </view>
 </view>
