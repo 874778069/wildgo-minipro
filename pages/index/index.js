@@ -4,8 +4,8 @@ Page({
   data: {
     loading: true,
     banner: [],
-    leftItems: [],
-    rightItems: []
+    activityItems: [],
+    shopProductItems: []
   },
 
   onLoad() {
@@ -25,18 +25,18 @@ Page({
         targetUrl: `/pages/activity/detail/detail?id=${item.id}`,
         cover: item.cover || (item.images[0] && item.images[0].url)
       }))
-      const items = sourceItems.map((item, index) => ({
+      const items = sourceItems.map((item) => ({
         ...item,
         coverUrl: imageUrl(item.cover),
         typeText: item.type === 'SHOP_PRODUCT' ? '套餐' : '活动',
         subtitle: item.type === 'SHOP_PRODUCT' ? item.shopName : (item.location || '地点待定'),
         priceText: Number(item.price).toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1'),
-        imageHeight: index % 3 === 0 ? 390 : index % 3 === 1 ? 470 : 420
+        imageHeight: item.type === 'SHOP_PRODUCT' ? 360 : 430
       }))
       this.setData({
         banner: (data.banner || []).map((item) => ({ ...item, image: imageUrl(item.image) })),
-        leftItems: items.filter((_, index) => index % 2 === 0),
-        rightItems: items.filter((_, index) => index % 2 === 1)
+        activityItems: items.filter((item) => item.type === 'ACTIVITY'),
+        shopProductItems: items.filter((item) => item.type === 'SHOP_PRODUCT')
       })
     } catch {
       wx.showToast({ title: '首页加载失败，请下拉重试', icon: 'none' })
