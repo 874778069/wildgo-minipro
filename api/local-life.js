@@ -81,6 +81,15 @@ function mockPay(orderNo) {
   })
 }
 
+function payOrder(shopProductId) {
+  return request({
+    url: '/local-life/order/pay',
+    method: 'POST',
+    data: { shopProductId },
+    auth: true
+  })
+}
+
 function getMyOrders(params) {
   return request({
     url: `/local-life/order/my${buildQuery(params)}`,
@@ -272,6 +281,7 @@ module.exports = {
   getShopProductShops,
   createOrder,
   mockPay,
+  payOrder,
   getMyOrders,
   getMyOrderDetail,
   unwrapList,

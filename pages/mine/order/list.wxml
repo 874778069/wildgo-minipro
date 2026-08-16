@@ -15,6 +15,7 @@
       <view class="info">
         <text class="name">{{item.productNameSnapshot}}</text>
         <text class="time">{{item.createdText}}</text>
+        <text class="time" wx:if="{{item.usedText}}">核销：{{item.usedText}}</text>
         <view class="price"><text>实付</text><text>¥{{item.amountText}}</text></view>
       </view>
     </view>

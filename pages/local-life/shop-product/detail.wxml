@@ -133,7 +133,7 @@
         loading="{{buying}}"
         disabled="{{buying}}"
         bindtap="buy"
-      >{{buying ? '正在创建订单' : '立即购买'}}</button>
+      >{{buying ? '支付处理中' : '立即购买'}}</button>
     </view>
   </block>
 </view>

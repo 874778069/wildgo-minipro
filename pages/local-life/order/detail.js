@@ -39,7 +39,8 @@ Page({
         order: {
           ...normalizeOrder(data),
           createdText: dateTime(data.createdAt),
-          paidText: data.paidAt ? dateTime(data.paidAt) : ''
+          paidText: data.paidAt ? dateTime(data.paidAt) : '',
+          usedText: data.usedAt ? dateTime(data.usedAt) : ''
         }
       })
     } catch (error) {
@@ -68,7 +69,8 @@ Page({
             order: {
               ...normalizeOrder(order),
               createdText: dateTime(order.createdAt),
-              paidText: order.paidAt ? dateTime(order.paidAt) : ''
+              paidText: order.paidAt ? dateTime(order.paidAt) : '',
+              usedText: order.usedAt ? dateTime(order.usedAt) : ''
             }
           })
           wx.showToast({ title: '模拟支付成功', icon: 'success' })

@@ -1,9 +1,9 @@
 const {
-  createOrder,
   getShopProductDetail,
   getShopProductShops,
   normalizeShop,
   normalizeShopProductDetail,
+  payOrder,
   todayBusinessHours
 } = require('../../../api/local-life')
 const { requireUserProfile } = require('../../../utils/request')
@@ -81,21 +81,36 @@ Page({
 
   async buy() {
     if (this.data.buying || !this.data.detail) return
-    this.setData({ buying: true })
     try {
       await requireUserProfile()
-      const order = await createOrder(this.data.detail.id)
-      wx.navigateTo({
-        url: `/pages/local-life/order/detail?id=${order.id}`
+      wx.showModal({
+        title: '确认支付',
+        content: '当前为测试支付，不会发起微信扣款。确认支付后才会创建订单。',
+        confirmText: '确认支付',
+        success: async (result) => {
+          if (!result.confirm) return
+          this.setData({ buying: true })
+          try {
+            const order = await payOrder(this.data.detail.id)
+            wx.navigateTo({
+              url: `/pages/local-life/order/detail?id=${order.id}`
+            })
+          } catch (error) {
+            wx.showToast({
+              title: error.message || '支付失败',
+              icon: 'none'
+            })
+          } finally {
+            this.setData({ buying: false })
+          }
+        }
       })
     } catch (error) {
       if (error && error.code === 'PROFILE_REQUIRED') return
       wx.showToast({
-        title: error.message || '创建订单失败',
+        title: error.message || '支付失败',
         icon: 'none'
       })
-    } finally {
-      this.setData({ buying: false })
     }
   }
 })

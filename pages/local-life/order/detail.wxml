@@ -64,6 +64,7 @@
       <view class="info-card">
         <view><text>下单时间</text><text>{{order.createdText}}</text></view>
         <view wx:if="{{order.paidText}}"><text>支付时间</text><text>{{order.paidText}}</text></view>
+        <view wx:if="{{order.usedText}}"><text>核销时间</text><text>{{order.usedText}}</text></view>
         <view><text>联系电话</text><text>{{order.userPhoneSnapshot || '未填写'}}</text></view>
       </view>
     </view>

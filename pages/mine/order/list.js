@@ -23,7 +23,8 @@ Page({
       this.setData({
         list: (data.list || []).map((item) => ({
           ...normalizeOrder(item),
-          createdText: dateTime(item.createdAt)
+          createdText: dateTime(item.createdAt),
+          usedText: item.usedAt ? dateTime(item.usedAt) : ''
         }))
       })
     } catch (error) {
