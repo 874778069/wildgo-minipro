@@ -4,6 +4,16 @@
     <text>LOCAL EXPERIENCES</text>
   </view>
 
+  <scroll-view class="status-tabs" scroll-x enable-flex>
+    <view
+      wx:for="{{tabs}}"
+      wx:key="value"
+      class="tab {{activeStatus === item.value ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-status="{{item.value}}"
+    >{{item.label}}</view>
+  </scroll-view>
+
   <view class="order-card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
     <view class="top-line">
       <text class="shop">{{item.shopNameSnapshot}}</text>
