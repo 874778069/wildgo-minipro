@@ -41,9 +41,9 @@ Page({
         order: {
           ...normalizeOrder(data),
           createdText: dateTime(data.createdAt),
-          paidText: data.paidAt ? dateTime(data.paidAt) : '',
-          usedText: data.usedAt ? dateTime(data.usedAt) : '',
-          refundedText: data.refundedAt ? dateTime(data.refundedAt) : ''
+          paidText: data.paidAt ? dateTime(data.paidAt) : '-',
+          usedText: data.usedAt ? dateTime(data.usedAt) : '-',
+          refundedText: data.refundedAt ? dateTime(data.refundedAt) : '-'
         }
       })
     } catch (error) {
@@ -72,9 +72,9 @@ Page({
             order: {
               ...normalizeOrder(order),
               createdText: dateTime(order.createdAt),
-              paidText: order.paidAt ? dateTime(order.paidAt) : '',
-              usedText: order.usedAt ? dateTime(order.usedAt) : '',
-              refundedText: order.refundedAt ? dateTime(order.refundedAt) : ''
+              paidText: order.paidAt ? dateTime(order.paidAt) : '-',
+              usedText: order.usedAt ? dateTime(order.usedAt) : '-',
+              refundedText: order.refundedAt ? dateTime(order.refundedAt) : '-'
             }
           })
           wx.showToast({ title: '模拟支付成功', icon: 'success' })
@@ -106,9 +106,9 @@ Page({
             order: {
               ...normalizeOrder(order),
               createdText: dateTime(order.createdAt),
-              paidText: order.paidAt ? dateTime(order.paidAt) : '',
-              usedText: order.usedAt ? dateTime(order.usedAt) : '',
-              refundedText: order.refundedAt ? dateTime(order.refundedAt) : ''
+              paidText: order.paidAt ? dateTime(order.paidAt) : '-',
+              usedText: order.usedAt ? dateTime(order.usedAt) : '-',
+              refundedText: order.refundedAt ? dateTime(order.refundedAt) : '-'
             }
           })
           wx.showToast({ title: '退款成功', icon: 'success' })
