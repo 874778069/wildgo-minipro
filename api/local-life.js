@@ -81,6 +81,14 @@ function mockPay(orderNo) {
   })
 }
 
+function refundOrder(id) {
+  return request({
+    url: `/local-life/order/refund/${id}`,
+    method: 'POST',
+    auth: true
+  })
+}
+
 function payOrder(shopProductId) {
   return request({
     url: '/local-life/order/pay',
@@ -281,6 +289,7 @@ module.exports = {
   getShopProductShops,
   createOrder,
   mockPay,
+  refundOrder,
   payOrder,
   getMyOrders,
   getMyOrderDetail,

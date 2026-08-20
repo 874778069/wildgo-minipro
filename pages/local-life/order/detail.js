@@ -1,7 +1,8 @@
 const {
   getMyOrderDetail,
   mockPay,
-  normalizeOrder
+  normalizeOrder,
+  refundOrder
 } = require('../../../api/local-life')
 const { dateTime } = require('../../../utils/format')
 
@@ -11,6 +12,7 @@ Page({
     order: null,
     loading: true,
     paying: false,
+    refunding: false,
     error: false
   },
 
@@ -40,7 +42,8 @@ Page({
           ...normalizeOrder(data),
           createdText: dateTime(data.createdAt),
           paidText: data.paidAt ? dateTime(data.paidAt) : '',
-          usedText: data.usedAt ? dateTime(data.usedAt) : ''
+          usedText: data.usedAt ? dateTime(data.usedAt) : '',
+          refundedText: data.refundedAt ? dateTime(data.refundedAt) : ''
         }
       })
     } catch (error) {
@@ -70,7 +73,8 @@ Page({
               ...normalizeOrder(order),
               createdText: dateTime(order.createdAt),
               paidText: order.paidAt ? dateTime(order.paidAt) : '',
-              usedText: order.usedAt ? dateTime(order.usedAt) : ''
+              usedText: order.usedAt ? dateTime(order.usedAt) : '',
+              refundedText: order.refundedAt ? dateTime(order.refundedAt) : ''
             }
           })
           wx.showToast({ title: '模拟支付成功', icon: 'success' })
@@ -81,6 +85,40 @@ Page({
           })
         } finally {
           this.setData({ paying: false })
+        }
+      }
+    })
+  },
+
+  refund() {
+    if (this.data.refunding || !this.data.order) return
+    wx.showModal({
+      title: '确认退款',
+      content: '确认后订单将直接退款，核销码会立即失效。',
+      confirmText: '确认退款',
+      confirmColor: '#ff5a5f',
+      success: async (result) => {
+        if (!result.confirm) return
+        this.setData({ refunding: true })
+        try {
+          const order = await refundOrder(this.data.order.id)
+          this.setData({
+            order: {
+              ...normalizeOrder(order),
+              createdText: dateTime(order.createdAt),
+              paidText: order.paidAt ? dateTime(order.paidAt) : '',
+              usedText: order.usedAt ? dateTime(order.usedAt) : '',
+              refundedText: order.refundedAt ? dateTime(order.refundedAt) : ''
+            }
+          })
+          wx.showToast({ title: '退款成功', icon: 'success' })
+        } catch (error) {
+          wx.showToast({
+            title: error.message || '退款失败',
+            icon: 'none'
+          })
+        } finally {
+          this.setData({ refunding: false })
         }
       }
     })
