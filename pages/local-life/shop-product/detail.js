@@ -41,13 +41,22 @@ Page({
         getShopProductShops(this.data.id)
       ])
       const detail = normalizeShopProductDetail(data)
-      const shops = (Array.isArray(shopData) ? shopData : []).map((item) => {
+      const currentShopProducts = (Array.isArray(shopData) ? shopData : [])
+        .filter((item) => Number(item.id) === Number(detail.id))
+      const shops = currentShopProducts.map((item) => {
         const shop = normalizeShop(item.shop || {})
         shop.shopProductId = item.id
         shop.priceText = item.price !== undefined ? String(item.price) : ''
         shop.businessHoursText = todayBusinessHours(shop)
         return shop
       })
+      if (!shops.length && detail.shop && detail.shop.id) {
+        const shop = normalizeShop(detail.shop)
+        shop.shopProductId = detail.id
+        shop.priceText = detail.price !== undefined ? String(detail.price) : ''
+        shop.businessHoursText = todayBusinessHours(shop)
+        shops.push(shop)
+      }
       this.setData({ detail, shops })
       wx.setNavigationBarTitle({ title: detail.name || '套餐详情' })
     } catch (error) {
