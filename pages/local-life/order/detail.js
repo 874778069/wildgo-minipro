@@ -1,4 +1,5 @@
 const {
+  cancelOrder,
   getMyOrderDetail,
   mockPay,
   normalizeOrder,
@@ -12,6 +13,7 @@ Page({
     order: null,
     loading: true,
     paying: false,
+    cancelling: false,
     refunding: false,
     error: false
   },
@@ -43,6 +45,7 @@ Page({
           createdText: dateTime(data.createdAt),
           paidText: data.paidAt ? dateTime(data.paidAt) : '-',
           usedText: data.usedAt ? dateTime(data.usedAt) : '-',
+          cancelledText: data.cancelledAt ? dateTime(data.cancelledAt) : '-',
           refundedText: data.refundedAt ? dateTime(data.refundedAt) : '-'
         }
       })
@@ -74,6 +77,7 @@ Page({
               createdText: dateTime(order.createdAt),
               paidText: order.paidAt ? dateTime(order.paidAt) : '-',
               usedText: order.usedAt ? dateTime(order.usedAt) : '-',
+              cancelledText: order.cancelledAt ? dateTime(order.cancelledAt) : '-',
               refundedText: order.refundedAt ? dateTime(order.refundedAt) : '-'
             }
           })
@@ -85,6 +89,41 @@ Page({
           })
         } finally {
           this.setData({ paying: false })
+        }
+      }
+    })
+  },
+
+  cancel() {
+    if (this.data.cancelling || !this.data.order) return
+    wx.showModal({
+      title: '取消订单',
+      content: '确认取消这笔未支付订单吗？',
+      confirmText: '确认取消',
+      confirmColor: '#ff5a5f',
+      success: async (result) => {
+        if (!result.confirm) return
+        this.setData({ cancelling: true })
+        try {
+          const order = await cancelOrder(this.data.order.id)
+          this.setData({
+            order: {
+              ...normalizeOrder(order),
+              createdText: dateTime(order.createdAt),
+              paidText: order.paidAt ? dateTime(order.paidAt) : '-',
+              usedText: order.usedAt ? dateTime(order.usedAt) : '-',
+              cancelledText: order.cancelledAt ? dateTime(order.cancelledAt) : '-',
+              refundedText: order.refundedAt ? dateTime(order.refundedAt) : '-'
+            }
+          })
+          wx.showToast({ title: '已取消', icon: 'success' })
+        } catch (error) {
+          wx.showToast({
+            title: error.message || '取消失败',
+            icon: 'none'
+          })
+        } finally {
+          this.setData({ cancelling: false })
         }
       }
     })
@@ -108,6 +147,7 @@ Page({
               createdText: dateTime(order.createdAt),
               paidText: order.paidAt ? dateTime(order.paidAt) : '-',
               usedText: order.usedAt ? dateTime(order.usedAt) : '-',
+              cancelledText: order.cancelledAt ? dateTime(order.cancelledAt) : '-',
               refundedText: order.refundedAt ? dateTime(order.refundedAt) : '-'
             }
           })

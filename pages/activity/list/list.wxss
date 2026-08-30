@@ -39,10 +39,27 @@
   background: #111116;
 }
 
+.cover-wrap {
+  position: relative;
+}
+
 .activity-card image {
   display: block;
   width: 100%;
   background: #202027;
+}
+
+.expired-badge {
+  position: absolute;
+  top: 14rpx;
+  right: 14rpx;
+  padding: 7rpx 14rpx;
+  border-radius: 999rpx;
+  color: #fff;
+  font-size: 18rpx;
+  font-weight: 900;
+  background: rgba(10, 10, 13, 0.72);
+  backdrop-filter: blur(10rpx);
 }
 
 .content {

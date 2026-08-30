@@ -19,6 +19,7 @@
       <text class="status-tip" wx:if="{{order.status === 'WAIT_PAY'}}">完成测试支付后将生成核销二维码</text>
       <text class="status-tip" wx:elif="{{order.status === 'PAID'}}">到店后请向工作人员出示核销二维码</text>
       <text class="status-tip" wx:elif="{{order.status === 'USED'}}">套餐已完成核销，感谢你的体验</text>
+      <text class="status-tip" wx:elif="{{order.status === 'CANCELLED'}}">订单已取消，可重新购买</text>
       <text class="status-tip" wx:elif="{{order.status === 'REFUND'}}">订单已退款，核销码已失效</text>
     </view>
 
@@ -66,6 +67,7 @@
         <view><text>下单时间</text><text>{{order.createdText}}</text></view>
         <view><text>支付时间</text><text>{{order.paidText}}</text></view>
         <view><text>核销时间</text><text>{{order.usedText}}</text></view>
+        <view><text>取消时间</text><text>{{order.cancelledText}}</text></view>
         <view><text>退款时间</text><text>{{order.refundedText}}</text></view>
         <view><text>联系电话</text><text>{{order.userPhoneSnapshot || '未填写'}}</text></view>
       </view>
@@ -73,6 +75,7 @@
 
     <view class="bottom-bar" wx:if="{{order.status === 'WAIT_PAY'}}">
       <view><text>应付</text><text class="amount-price">¥{{order.amountText}}</text></view>
+      <button class="cancel-button" loading="{{cancelling}}" disabled="{{paying || cancelling}}" bindtap="cancel">{{cancelling ? '取消中' : '取消订单'}}</button>
       <button loading="{{paying}}" disabled="{{paying}}" bindtap="pay">{{paying ? '支付处理中' : '模拟支付（测试）'}}</button>
     </view>
     <view class="bottom-bar refund-bar" wx:elif="{{order.status === 'PAID'}}">

@@ -40,6 +40,7 @@ Page({
       const incoming = (data.list || []).map((item, index) => ({
         ...item,
         coverUrl: imageUrl(item.cover || (item.images[0] && item.images[0].url)),
+        expired: item.endTime ? new Date(item.endTime).getTime() < Date.now() : false,
         imageHeight: (baseIndex + index) % 3 === 0
           ? 430
           : (baseIndex + index) % 3 === 1

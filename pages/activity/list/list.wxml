@@ -13,7 +13,10 @@
         bindtap="goDetail"
         data-id="{{item.id}}"
       >
-        <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
+        <view class="cover-wrap">
+          <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
+          <text class="expired-badge" wx:if="{{item.expired}}">已过期</text>
+        </view>
         <view class="content">
           <text class="title">{{item.title}}</text>
           <text class="description">{{item.description || '一场值得期待的旅行活动'}}</text>
@@ -34,7 +37,10 @@
         bindtap="goDetail"
         data-id="{{item.id}}"
       >
-        <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
+        <view class="cover-wrap">
+          <image src="{{item.coverUrl}}" mode="aspectFill" style="height: {{item.imageHeight}}rpx;" />
+          <text class="expired-badge" wx:if="{{item.expired}}">已过期</text>
+        </view>
         <view class="content">
           <text class="title">{{item.title}}</text>
           <text class="description">{{item.description || '一场值得期待的旅行活动'}}</text>
